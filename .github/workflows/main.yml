@@ -28,4 +28,4 @@ jobs:
     - name: Helm lint
       run: helm lint charts/vinicius-pipeline
     - name: Helm install
-      run: helm install vinicius-pipeline ./charts/vinicius-pipeline --create-namespace -n vinicius-carvalho
+      run: sudo helm install vinicius-pipeline ./charts/vinicius-pipeline --create-namespace -n vinicius-carvalho
