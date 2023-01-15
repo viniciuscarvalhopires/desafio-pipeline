@@ -24,9 +24,9 @@ jobs:
     - name: Docker push
       run: docker push ${{secrets.DOCKER_USER}}/vinicius-jackexperts:pipeline
     - name: Conexão cluster
-      run: export KUBECONFIG=./Kubeconfig
+      run: sudo export KUBECONFIG=./Kubeconfig
     - name: Test connection
-      run: kubectl cluster-info
+      run: cat Kubeconfig
     - name: Helm lint
       run: helm lint charts/vinicius-pipeline
     - name: Helm install
