@@ -26,6 +26,12 @@ jobs:
     - name: Conexão cluster
       run: export KUBECONFIG=Kubeconfig
     - name: Test connection
+      run: sudo cp ./Kubeconfig $HOME/
+    - name: Test connection
+      run: sudo chown $(id -u):$(id -g) $HOME/Kubeconfig
+    - name: Test connection
+      run: export KUBECONFIG=$HOME/Kubeconfig
+    - name: Test connection
       run: kubectl get nodes
     - name: Helm lint
       run: helm lint charts/vinicius-pipeline
