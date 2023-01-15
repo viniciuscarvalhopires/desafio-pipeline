@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: CI/CD
 
 on:
   push:
@@ -19,15 +19,27 @@ jobs:
        DOCKER_USER: ${{secrets.DOCKER_USER}}
        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag vinicpires/vinicius-jackexperts:pipeline
+      
     - name: Docker push
       run: docker push ${{secrets.DOCKER_USER}}/vinicius-jackexperts:pipeline
-    - name: Test connection
-      run: export KUBECONFIG=${{secrets.KUBE_CONFIGRESERVE}}          
-    - name: Test connection
-      run: kubectl get nodes
-    - name: Helm lint
+      
+    - name: Criar diretório .kube
+      run: mkdir $HOME/.kube          
+      
+    - name: Desencriptar o arquivo de configuração p o diretório $HOME/.kube/config
+      run: echo ${{secrets.KUBE_CONFIG}} | base64 --decode > $HOME/.kube/config
+      
+    - name: pegar kubeconfig
+      run: cat $HOME/.kube/config
+      
+    - name: Testar conexão com o cluster
+      run: kubectl cluster-info
+      
+    - name: Helm Lint
       run: helm lint charts/vinicius-pipeline
-    - name: Helm install
+      
+    - name: Helm Install
       run: helm install vinicius-pipeline ./charts/vinicius-pipeline --create-namespace -n vinicius-carvalho
