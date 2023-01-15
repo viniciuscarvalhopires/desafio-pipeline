@@ -26,7 +26,7 @@ jobs:
     - name: Conexão cluster
       run: export KUBECONFIG=./Kubeconfig
     - name: Test connection
-      run: cat Kubeconfig
+      run: kubectl get nodes
     - name: Helm lint
       run: helm lint charts/vinicius-pipeline
     - name: Helm install
